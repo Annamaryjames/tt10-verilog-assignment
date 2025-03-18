@@ -4,8 +4,7 @@
  */
 
 `default_nettype none
-
-module tt_um_addermultiplier (
+module tt_um_addermultiplier(
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -17,36 +16,29 @@ module tt_um_addermultiplier (
 );
     wire [3:0] adder_output;
     wire[5:0] multiplier_output;
+    
     kogge_stone_adder_3bit adder_inst(
         .A(ui_in[2:0]),
         .B(ui_in[5:3]),
         .Enable(ui_in[6]),
         .Sum_Carry(adder_output)
     );
+    
     array_multiplier_3bit multiplier_inst(
         .A(ui_in[2:0]),
         .B(ui_in[5:3]),
         .Enable(ui_in[6]),
         .Product(multiplier_output)
     );
-    assign uo_out[5:0] = (ui_in[6])? {2'b00,adder_output}:multiplier_output;
-    assign uo_out[7:6]=2'b00;
-    assign uio_out = 0;
-    assign uio_oe  = 0;
-      // List all unused inputs to prevent warnings
+    
+    assign uo_out[5:0] = (ui_in[6])? {2'b00, adder_output} : multiplier_output;
+    assign uo_out[7:6] = 2'b00;
+
+    // List all unused inputs to prevent warnings
     wire _unused = &{ena, clk, rst_n, 1'b0};
-endmodule
+    
+endmodule  // End of adder_multiplier module
 
-  // All output pins must be assigned. If not used, assign to 0.
-  //assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-   // assign uo_out[0] = ui_in[0] ^ ui_in[1] ^ ui_in[2];
-  //  assign uo_out[1] = (ui_in[0] & ui_in[1]) |(ui_in[0] & ui_in[2]) |(ui_in[1] & ui_in[2]);
- //   assign uo_out[7:2] = 6'b0;
-
-
-
-
-endmodule
 // ----------------- 3-BIT KOGGE-STONE ADDER -----------------
 module kogge_stone_adder_3bit (
     input  wire [2:0] A, B,
@@ -81,7 +73,8 @@ module kogge_stone_adder_3bit (
     // Step 5: Assign Output (Enable Control)
     assign Sum_Carry = Enable ? {cout, sum} : 4'b0000;
 
-endmodule 
+endmodule  // End of kogge_stone_adder_3bit module
+
 // ----------------- Array Multiplier (3-bit x 3-bit) -----------------
 module array_multiplier_3bit (
     input wire [2:0] A,      // 3-bit Input A
@@ -113,4 +106,4 @@ module array_multiplier_3bit (
             Product = product1;    // If Enable is 0, output the product
         end
     end
-endmodule
+endmodule  // End of array_multiplier_3bit module
