@@ -9,12 +9,14 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+This project implements a 3-bit Kogge-Stone Adder and a 3-bit Array Multiplier in Verilog. The adder and multiplier share the same input interface and are selected based on the Enable signal
 
 ## How to test
 
-Explain how to use your project
+
+Provide 3-bit inputs for ui[0] to ui[2] and ui[3] to ui[5].Set ui[6] (Enable signal) to 1 to select the multiplier or to 0 to select the adder. Can run a Verilog simulation using a testbench to provide the necessary inputs and observe the outputs.
+
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+no
